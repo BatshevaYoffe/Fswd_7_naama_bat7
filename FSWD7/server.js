@@ -11,8 +11,6 @@ const port = 3000;
 // Enable CORS
 app.use(cors());
 
-
-
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,12 +18,14 @@ app.use(bodyParser.json());
 const loginRoutes = require('./routes/login');
 const regRoutes = require('./routes/register');
 const userRoutes = require('./routes/user');
+const infoRoutes = require('./routes/info');
 // const postRoutes = require('./routes/posts');
 // const commentRoutes = require('./routes/comments');
 // const todoRoutes = require('./routes/todos');
 // const usersRRoutes = require('./routes/usersR');
 // const albumsRoutes = require('./routes/albums');
 // const photosRoutes = require('./routes/photos');
+app.use('/info',infoRoutes);
 app.use('/register', regRoutes);
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);

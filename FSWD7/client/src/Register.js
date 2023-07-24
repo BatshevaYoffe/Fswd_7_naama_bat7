@@ -44,7 +44,7 @@ function Register({ setUsername }) {
 
   return (
     <section className={styles.section}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit} >
         <h5>REGISTER</h5>
         <div className={styles["form-row"]}>
           <input
