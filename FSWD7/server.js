@@ -1,17 +1,3 @@
-// const express = require("express")
-// const app = express()
-
-// // app.use(express.static("public"))
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.json())
-
-// // app.set("view engine", "ejs")
-
-// const userRouter = require(`./routes/login`)
-
-// app.use("/login", userRouter)
-
-// app.listen(3000)
 
 const express = require("express");
 const app = express();
@@ -21,22 +7,7 @@ const mysql = require("mysql2");
 app.use(cors());
 app.use(express.json());
 
-const sqlPassword = "bat7Yoffe";
-
-
-// Importing all the routes
-// const homeroute=require("./routes/Home")
-// const loginroute=require("./routes/login")
-  
-// // Creating express server
-// const app=express()
-  
-// // Handling routes request
-// app.use("/home",homeroute)
-// app.use("/login",loginroute)
-// app.listen((3000),()=>{
-//     console.log("Server is Running")
-// })
+const sqlPassword = "324170521";
 //login & register
 app.post("/login", function (req, res) {
   const { name, password } = req.body;
