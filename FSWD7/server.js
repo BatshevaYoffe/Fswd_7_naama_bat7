@@ -1,28 +1,61 @@
+// const express = require("express")
+// const app = express()
+
+// // app.use(express.static("public"))
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.json())
+
+// // app.set("view engine", "ejs")
+
+// const userRouter = require(`./routes/login`)
+
+// app.use("/login", userRouter)
+
+// app.listen(3000)
+
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const mysql = require("mysql2");
-const { log } = require("console");
 
 app.use(cors());
 app.use(express.json());
 
 const sqlPassword = "bat7Yoffe";
 
+
+// Importing all the routes
+// const homeroute=require("./routes/Home")
+// const loginroute=require("./routes/login")
+  
+// // Creating express server
+// const app=express()
+  
+// // Handling routes request
+// app.use("/home",homeroute)
+// app.use("/login",loginroute)
+// app.listen((3000),()=>{
+//     console.log("Server is Running")
+// })
 //login & register
 app.post("/login", function (req, res) {
   const { name, password } = req.body;
 
+  console.log(name);
+  console.log(password);
   if (!name || !password) {
     res.status(400).send("Missing username or password");
     return;
   }
 
-  const query = `SELECT * FROM passwords NATURAL JOIN users WHERE username = '${name}' LIMIT 1`;
+  const query = `SELECT * FROM password NATURAL JOIN users WHERE username = '${name}' LIMIT 1`;
 
   sqlConnect(query)
     .then((results) => {
+      console.log(results);
+      console.log(results.length);
       if (results.length === 1 && results[0].password === password) {
+        
         res.status(200).json(results[0]);
       } else {
         res.status(401).send("Wrong username or password");
@@ -36,21 +69,6 @@ app.post("/login", function (req, res) {
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
-  const query = `SELECT * FROM users WHERE username = 'bat7' LIMIT 1`;
-
-sqlConnect(query)
-  .then((results) => {
-    if (results.length === 1 ) {
-      console.log(results[0]);
-
-        } else {
-      console.log("Wrong username or password");
-    }
-  })
-  .catch((err) => {
-    console.error(err);
-  });
-
 });
 
 function sqlConnect(query, values = []) {
