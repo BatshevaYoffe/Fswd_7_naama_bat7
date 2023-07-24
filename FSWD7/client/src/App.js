@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import Navbar from "./Navbar";
-import Info from "./pages/Info";
-import Todos from "./pages/Todos";
-import Posts from "./pages/Posts";
-import Error from "./pages/Error";
+import Info from "./libraryPages/info";
+import ContactTheManager from "./libraryPages/contactTheManager";
+import FindBook from "./libraryPages/findBook";
+import MyBooks from "./libraryPages/myBooks";
+import OrderBasket from "./libraryPages/orderBasket";
+//import Error from "/pages/Error";
 import Register from "./Register";
 
 function App() {
@@ -48,22 +50,38 @@ function App() {
               }
             />
             <Route
-              path={`/users/${username}/todos`}
+              path={`/users/${username}/findBook`}
               element={
                 <ProtectedRoute>
-                  <Todos />
+                  <FindBook />
                 </ProtectedRoute>
               }
             />
             <Route
-              path={`/users/${username}/posts`}
+              path={`/users/${username}/orderBasket`}
               element={
                 <ProtectedRoute>
-                  <Posts />
+                  <OrderBasket />
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<Error />} />
+            <Route
+              path={`/users/${username}/myBooks`}
+              element={
+                <ProtectedRoute>
+                  <MyBooks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={`/users/${username}/contactTheManager`}
+              element={
+                <ProtectedRoute>
+                  <ContactTheManager />
+                </ProtectedRoute>
+              }
+            />
+            {/* <Route path="*" element={<Error />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>
