@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./Info.module.css";
 
 function Info() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const [user,setUser] =useState( JSON.parse(localStorage.getItem("currentUser")));
 
   const [isEdit, setIsEdit] = useState(0);
 
@@ -24,9 +24,9 @@ function Info() {
       return;
     }
     const userInfo = {
-        fisrtName: fisrtName,
-        lastName: lastName,
-        userName:userName,
+        fisrt_name: fisrtName,
+        last_name: lastName,
+        username:userName,
         email: email,
         phone:phone,
         address:address,
@@ -44,6 +44,10 @@ function Info() {
     };
   
     fetch(url, requestUpdateUserInfo)
+    .then((res)=>{
+      localStorage.setItem("currentUser", JSON.stringify(userInfo));
+      setUser(userInfo);
+    })
       .catch((error) => {
         console.log(error);
       });
@@ -85,12 +89,19 @@ function Info() {
       ) : (
         <div className={styles["user-card"]}>
           <input id="updatedFirstName" defaultValue={user.first_name} />
+          <br/>
           <input id="updatedLastName" defaultValue={user.last_name} />
+          <br/>
           <input id="updatedUserName" defaultValue={user.username} />
+          <br/>
           <input id="updatedEmail" defaultValue={user.email} />
+          <br/>
           <input id="updatedPhone" defaultValue={user.phone} />
+          <br/>
           <input id="updatedAddress" defaultValue={user.address} />
+          <br/>
           <input id="updatedAge" defaultValue={user.age} />
+          <br/>
           <button onClick={editInfo}>Save</button>
         </div>
       )}

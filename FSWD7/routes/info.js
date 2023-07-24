@@ -41,41 +41,28 @@ function sqlConnect(query, values = []) {
       });
     });
   }
+    
   
-
-// Define your info route logic here
-router.put('/', (req, res) => {
-  const postid=req.params.postid;
-  console.log(postid)
-
-  const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "324170521", // your password here
-    port: 3306,
-    database: "FullStackProject6", // remove comment after first run
-  });
-
-  con.connect(function (err) {
-    if (err) {
-      console.error("Error connecting to database:", err);
-      return;
-    }
-    console.log("Connected to database!");
-
-    const que = `SELECT * FROM comments WHERE postId = '${postid}'`;
-    console.log(que);
-    con.query(que, (err, result) => {
-      if (err) {
-        console.log("Error executing the query:", err);
-        return;
-      }
-      console.log(result.length)
-      res.status(200).json(result)
-
-        con.end();
-      });
+router.put("/:userId", function (req, res) {
+    const {userId}=req.params;
+    const {fisrt_name,last_name,username,email,phone,address,age}=req.body;
+    
+    const query = `UPDATE users SET first_name = '${fisrt_name}' ,  last_name = '${last_name}' ,username = '${username}',phone = '${phone}',email = '${email}',address = '${address}',age = '${age}' WHERE id = ${userId}`;
+    console.log(query)
+    sqlConnect(query)
+    .then((results) => {
+      console.log("the comment updated");
+      res.status(200).send("the user info updated");
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred");
     });
-});
+    
+})
+    
+
+    
+
 
 module.exports = router;
