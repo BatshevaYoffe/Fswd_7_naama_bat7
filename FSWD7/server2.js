@@ -11,21 +11,7 @@ const port = 3000;
 // Enable CORS
 app.use(cors());
 
-// Database connection
-const db = mysql.createConnection({
-host: 'localhost',
-user: 'root',
-password: '2424',
-database: 'project6',
-});
 
-db.connect((err) => {
-if (err) {
-    console.error('Error connecting to the database: ', err);
-    return;
-}
-console.log('Connected to the database');
-});
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
