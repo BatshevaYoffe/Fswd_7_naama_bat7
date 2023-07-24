@@ -1,138 +1,140 @@
-import {useState} from "react"
 import { useNavigate } from "react-router-dom";
-// import './login.css';
-function Register(){
-    const [name,setName]=useState("");
-    const [phone,setPhone]=useState("");
-    const [email,setEmail]=useState("");
-    const [website,setWebsite]=useState("");
-    const [userName,setUserName]=useState("");
-    const [password,setPassword]=useState("");
-    const [isSubmitFocused, setIsSubmitFocused] = useState(false);
-    const navigate=useNavigate(); 
- 
- 
-    const handleFocus = () => {
-     setIsSubmitFocused(true);
-   };
- 
-   const handleBlur = () => {
-     setIsSubmitFocused(false);
-   };
- 
- 
-    const changeUserName= (event)=>{
-     setUserName(event.target.value);
-    }
-    const changePassword= (event)=>{
-     setPassword(event.target.value);
-    }
-    const changeName= (event)=>{
-        setName(event.target.value);
-    }
-    const changePhone= (event)=>{
-        setPhone(event.target.value);
-    }
-    const changeEmail= (event)=>{
-        setEmail(event.target.value);
-    }
-    const changeWebsite= (event)=>{
-        setWebsite(event.target.value);
-    }
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import styles from "./Login.module.css";
 
-    const registerUser = (event)=>{
-        debugger;
+function Register({ setUsername }) {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({ username: "", password: "", first_name: "", last_name: "", email: "", phone: '', address: '', age: "" }); // מערך שמכיל את המשתנים של השם והסיסמה
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    console.log("handleSubmit");
+    e.preventDefault();
+
     const url = "http://localhost:3000/register";
-  
-    const requestRegister = {
+    const requestOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name,phone,email,website,userName,password }),
+      body: JSON.stringify(user),
     };
-  
-    fetch(url, requestRegister)
+
+    fetch(url, requestOptions)
       .then((response) => {
         if (response.status === 200) {
-            alert ("you  are added to the database ");
-            navigate('/login');
-        } else if (response.status === 202) {
-         alert("you already  registerd");
-         navigate("/login");
-        }
+          return response.json();
+        } else
+          // if (response.status === 409) {
+          throw "Username or password already exists";
+        //  }
+      })
+      .then((u) => {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        navigate(`/users/${user.username}/info`);
       })
       .catch((error) => {
-        setPassword("");
-        setUserName("");
-        alert(error.message);
+        console.error(error);
+        alert(error);
       });
-      event.preventDefault();
-    }
-    return (
-        <div className="centered-container">
-        <form className="formRegister"  onSubmit={registerUser}>
-        <input id="updateFirstName" required />
-          <input id="updateLastName" required />
-          <input id="updateEmail" />
-          <input id="updateUserName"  />
-          <input id="updateEmail"  />
-          <input id="updatePhone"  />
-          <input id="updateAddress"  />
-          <input id="updateAge"  />
-          <label>Name:</label>
+  };
+
+  return (
+    <section className={styles.section}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <h5>REGISTER</h5>
+        <div className={styles["form-row"]}>
           <input
-          required
-          value={name}
-          onChange={changeName}
-          placeholder="Name"
-          /><br/>
-          <label>Phone:</label>
-          <input
-          required
-          value={phone}
-          onChange={changePhone}
-          placeholder="Phone"
-          type="number"
-          /><br/>
-          <label>Email:</label>
-          <input
-          required
-          value={email}
-          onChange={changeEmail}
-          placeholder="Email"
-          type="email"
-          /><br/>
-          <label>Website:</label>
-          <input
-          required
-          value={website}
-          onChange={changeWebsite}
-          placeholder="Website"
-          /><br/>
-          <label>User name:</label>
-          <input
-          required
-          value={userName}
-          onChange={changeUserName}
-          placeholder="userName"
-          /><br/>
-          <label>Password:</label>
-          <input
-          required
-          value={password}
-          onChange={changePassword}
-          placeholder="password"
-          /><br/>
-            <input 
-            type="submit"
-             value="Submit"
-             className={isSubmitFocused ? "bold-on-submit" : ""}
-             onFocus={handleFocus}
-             onBlur={handleBlur}
-             />
-        </form>
+            type="text"
+            placeholder="Username"
+            className={styles["form-input"]}
+            id="name"
+            value={user.username}
+            onChange={(e) => setUser({ ...user, username: e.target.value })} // עדכון השדה של השם ב-user
+          />
         </div>
-       )
+        <div className={styles["form-row"]}>
+          <input
+            type="password"
+            placeholder="Password"
+            className={styles["form-input"]}
+            id="password"
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="text"
+            placeholder="first_name"
+            className={styles["form-input"]}
+            id="first_name"
+            value={user.first_name}
+            onChange={(e) => setUser({ ...user, first_name: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="text"
+            placeholder="last_name"
+            className={styles["form-input"]}
+            id="last_name"
+            value={user.last_name}
+            onChange={(e) => setUser({ ...user, last_name: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="email"
+            placeholder="email"
+            className={styles["form-input"]}
+            id="email"
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="phone"
+            placeholder="phone"
+            className={styles["form-input"]}
+            id="phone"
+            value={user.phone}
+            onChange={(e) => setUser({ ...user, phone: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="text"
+            placeholder="address"
+            className={styles["form-input"]}
+            id="address"
+            value={user.address}
+            onChange={(e) => setUser({ ...user, address: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <div className={styles["form-row"]}>
+          <input
+            type="number"
+            placeholder="age"
+            className={styles["form-input"]}
+            id="age"
+            value={user.age}
+            onChange={(e) => setUser({ ...user, age: e.target.value })} // עדכון השדה של השם ב-user
+          />
+        </div>
+        <button type="submit" className={styles.btn}>
+          REGISTER
+        </button>
+        <Link className={styles["btn-link"]} to="/login">
+          LOGIN
+        </Link>
+      </form>
+    </section>
+  );
 }
+
 export default Register;

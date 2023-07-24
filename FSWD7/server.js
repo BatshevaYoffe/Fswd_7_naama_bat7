@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const loginRoutes = require('./routes/login');
+const regRoutes = require('./routes/register');
 const userRoutes = require('./routes/user');
 // const postRoutes = require('./routes/posts');
 // const commentRoutes = require('./routes/comments');
@@ -25,6 +26,7 @@ const userRoutes = require('./routes/user');
 // const usersRRoutes = require('./routes/usersR');
 // const albumsRoutes = require('./routes/albums');
 // const photosRoutes = require('./routes/photos');
+app.use('/register', regRoutes);
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
 // app.use('/posts', postRoutes);
