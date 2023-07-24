@@ -1,81 +1,130 @@
+import {useState} from "react"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Login.module.css";
-
-function Register({ setUsername }) {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name || !password) {
-      return;
+import './login.css';
+function Register(){
+    const [name,setName]=useState("");
+    const [phone,setPhone]=useState("");
+    const [email,setEmail]=useState("");
+    const [website,setWebsite]=useState("");
+    const [userName,setUserName]=useState("");
+    const [password,setPassword]=useState("");
+    const [isSubmitFocused, setIsSubmitFocused] = useState(false);
+    const navigate=useNavigate(); 
+ 
+ 
+    const handleFocus = () => {
+     setIsSubmitFocused(true);
+   };
+ 
+   const handleBlur = () => {
+     setIsSubmitFocused(false);
+   };
+ 
+ 
+    const changeUserName= (event)=>{
+     setUserName(event.target.value);
+    }
+    const changePassword= (event)=>{
+     setPassword(event.target.value);
+    }
+    const changeName= (event)=>{
+        setName(event.target.value);
+    }
+    const changePhone= (event)=>{
+        setPhone(event.target.value);
+    }
+    const changeEmail= (event)=>{
+        setEmail(event.target.value);
+    }
+    const changeWebsite= (event)=>{
+        setWebsite(event.target.value);
     }
 
+    const registerUser = (event)=>{
+        debugger;
     const url = "http://localhost:3000/register";
-    const requestOptions = {
+  
+    const requestRegister = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, password }),
+      body: JSON.stringify({ name,phone,email,website,userName,password }),
     };
-
-    fetch(url, requestOptions)
+  
+    fetch(url, requestRegister)
       .then((response) => {
         if (response.status === 200) {
-          return response.json();
-        } else if (response.status === 409) {
-          throw "Username or password already exists";
+            alert ("you  are added to the database ");
+            navigate('/login');
+        } else if (response.status === 202) {
+         alert("you already  registerd");
+         navigate("/login");
         }
       })
-      .then((user) => {
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        setUsername(name);
-        navigate(`/users/${name}/info`);
-      })
       .catch((error) => {
-        console.error(error);
-        alert(error);
+        setPassword("");
+        setUserName("");
+        alert(error.message);
       });
-  };
-
-  return (
-    <section className={styles.section}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <h5>REGISTER</h5>
-        <div className={styles["form-row"]}>
+      event.preventDefault();
+    }
+    return (
+        <div className="centered-container">
+        <form className="formRegister"  onSubmit={registerUser}>
+          <label>Name:</label>
           <input
-            type="text"
-            placeholder="Username"
-            className={styles["form-input"]}
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className={styles["form-row"]}>
+          required
+          value={name}
+          onChange={changeName}
+          placeholder="Name"
+          /><br/>
+          <label>Phone:</label>
           <input
-            type="password"
-            placeholder="Password"
-            className={styles["form-input"]}
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          required
+          value={phone}
+          onChange={changePhone}
+          placeholder="Phone"
+          type="number"
+          /><br/>
+          <label>Email:</label>
+          <input
+          required
+          value={email}
+          onChange={changeEmail}
+          placeholder="Email"
+          type="email"
+          /><br/>
+          <label>Website:</label>
+          <input
+          required
+          value={website}
+          onChange={changeWebsite}
+          placeholder="Website"
+          /><br/>
+          <label>User name:</label>
+          <input
+          required
+          value={userName}
+          onChange={changeUserName}
+          placeholder="userName"
+          /><br/>
+          <label>Password:</label>
+          <input
+          required
+          value={password}
+          onChange={changePassword}
+          placeholder="password"
+          /><br/>
+            <input 
+            type="submit"
+             value="Submit"
+             className={isSubmitFocused ? "bold-on-submit" : ""}
+             onFocus={handleFocus}
+             onBlur={handleBlur}
+             />
+        </form>
         </div>
-        <button type="submit" className={styles.btn}>
-          REGISTER
-        </button>
-        <Link className={styles["btn-link"]} to="/login">
-          LOGIN
-        </Link>
-      </form>
-    </section>
-  );
+       )
 }
-
 export default Register;

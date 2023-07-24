@@ -14,12 +14,24 @@ function Navbar() {
           Logout
         </NavLink>
         <br />
-        <NavLink to={`/users/${username}/todos`} className={styles.link}>
-          Todos
+        <NavLink to={`/users/${username}/findBook`} className={styles.link}>
+          Find the book
         </NavLink>
         <br />
-        <NavLink to={`/users/${username}/posts`} className={styles.link}>
-          Posts
+        <NavLink to={`/users/${username}/orderBasket`} className={styles.link}>
+        Order basket
+        </NavLink>
+        <br />
+        <NavLink to={`/users/${username}/addNewBook`} className={styles.link}>
+        Add New Book
+        </NavLink>
+        <br />
+        <NavLink to={`/users/${username}/myBooks`} className={styles.link}>
+        My books
+        </NavLink>
+        <br />
+        <NavLink to={`/users/${username}/contactTheManager`} className={styles.link}>
+        Contact the manager
         </NavLink>
         <br />
       </nav>
