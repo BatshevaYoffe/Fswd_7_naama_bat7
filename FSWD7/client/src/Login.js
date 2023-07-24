@@ -32,11 +32,13 @@ function Login({ setUsername }) {
       .then((response) => {
         if (response.status === 200) {
           return response.json();
-        } else if (response.status === 401) {
+        } else 
+        //if (response.status === 401) {
           throw "Wrong username or password";
-        }
+       // }
       })
       .then((user) => {
+        console.log(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
         setUsername(name);
         navigate(`/users/${name}/info`);

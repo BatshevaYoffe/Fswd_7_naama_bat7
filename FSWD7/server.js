@@ -1,81 +1,42 @@
+const express = require('express');
 
-const express = require("express");
+const cors = require('cors');
+
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+
 const app = express();
-const cors = require("cors");
-const mysql = require("mysql2");
+const port = 3000;
 
+// Enable CORS
 app.use(cors());
-app.use(express.json());
 
-const sqlPassword = "324170521";
-//login & register
-app.post("/login", function (req, res) {
-  const { name, password } = req.body;
 
-  console.log(name);
-  console.log(password);
-  if (!name || !password) {
-    res.status(400).send("Missing username or password");
-    return;
-  }
 
-  const query = `SELECT * FROM password NATURAL JOIN users WHERE username = '${name}' LIMIT 1`;
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-  sqlConnect(query)
-    .then((results) => {
-      console.log(results);
-      console.log(results.length);
-      if (results.length === 1 && results[0].password === password) {
-        
-        res.status(200).json(results[0]);
-      } else {
-        res.status(401).send("Wrong username or password");
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("An error occurred");
-    });
+const loginRoutes = require('./routes/login');
+const userRoutes = require('./routes/user');
+// const postRoutes = require('./routes/posts');
+// const commentRoutes = require('./routes/comments');
+// const todoRoutes = require('./routes/todos');
+// const usersRRoutes = require('./routes/usersR');
+// const albumsRoutes = require('./routes/albums');
+// const photosRoutes = require('./routes/photos');
+app.use('/login', loginRoutes);
+app.use('/users', userRoutes);
+// app.use('/posts', postRoutes);
+// app.use('/comments', commentRoutes);
+// app.use('/todos', todoRoutes);
+// app.use('/usersR', usersRRoutes);
+// app.use('/albums', albumsRoutes);
+// app.use('/photos', photosRoutes);
+
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
-
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
-
-function sqlConnect(query, values = []) {
-  return new Promise((resolve, reject) => {
-    const connection = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: sqlPassword,
-      database: "library_fswd7",
-    });
-
-    connection.connect((err) => {
-      if (err) {
-        console.error("Error connecting to MySQL server: " + err.stack);
-        reject(err);
-        return;
-      }
-      console.log("Connected to MySQL server");
-
-      connection.query(query, values, (err, results) => {
-        if (err) {
-          console.error("Error executing query: " + err.code);
-          reject(err);
-        }
-
-        connection.end((err) => {
-          if (err) {
-            console.error("Error closing connection: " + err.stack);
-            // reject(err);
-            return;
-          }
-          console.log("MySQL connection closed");
-        });
-
-        resolve(results);
-      });
-    });
-  });
-}
+    
