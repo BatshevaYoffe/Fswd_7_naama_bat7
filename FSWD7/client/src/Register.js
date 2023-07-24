@@ -1,6 +1,6 @@
 import {useState} from "react"
 import { useNavigate } from "react-router-dom";
-import './login.css';
+// import './login.css';
 function Register(){
     const [name,setName]=useState("");
     const [phone,setPhone]=useState("");
@@ -72,6 +72,14 @@ function Register(){
     return (
         <div className="centered-container">
         <form className="formRegister"  onSubmit={registerUser}>
+        <input id="updateFirstName" required />
+          <input id="updateLastName" required />
+          <input id="updateEmail" />
+          <input id="updateUserName"  />
+          <input id="updateEmail"  />
+          <input id="updatePhone"  />
+          <input id="updateAddress"  />
+          <input id="updateAge"  />
           <label>Name:</label>
           <input
           required
