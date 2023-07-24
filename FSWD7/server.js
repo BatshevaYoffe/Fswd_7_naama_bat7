@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 
 const loginRoutes = require('./routes/login');
 const userRoutes = require('./routes/user');
+const infoRoutes=require('./routes/Info');
 // const postRoutes = require('./routes/posts');
 // const commentRoutes = require('./routes/comments');
 // const todoRoutes = require('./routes/todos');
@@ -27,6 +28,7 @@ const userRoutes = require('./routes/user');
 // const photosRoutes = require('./routes/photos');
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
+app.use('/info',infoRoutes);
 // app.use('/posts', postRoutes);
 // app.use('/comments', commentRoutes);
 // app.use('/todos', todoRoutes);
