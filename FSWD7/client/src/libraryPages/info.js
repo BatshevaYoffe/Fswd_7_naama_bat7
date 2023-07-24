@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import styles from "./Info.module.css";
 
 function Info() {
-  const [user,setUser] =useState( JSON.parse(localStorage.getItem("currentUser")));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
 
   const [isEdit, setIsEdit] = useState(0);
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("currentUser")));
+  }, [localStorage.getItem("currentUser")]);
 
-  const editInfo = () => {
+  const editInfo =async () => {
     let fisrtName = document.getElementById("updatedFirstName").value;
     let lastName = document.getElementById("updatedLastName").value;
     let userName = document.getElementById("updatedUserName").value;
@@ -19,22 +22,24 @@ function Info() {
 
 
 
-    if (!fisrtName || !lastName || !userName || !email|| !phone|| !address|| !age) {
+    if (!fisrtName || !lastName || !userName || !email || !phone || !address || !age) {
       alert("One or more fields are missing!");
       return;
     }
     const userInfo = {
-        fisrt_name: fisrtName,
-        last_name: lastName,
-        username:userName,
-        email: email,
-        phone:phone,
-        address:address,
-        age:age
+      id: user.id,
+      fisrt_name: fisrtName,
+      last_name: lastName,
+      username: userName,
+      email: email,
+      phone: phone,
+      address: address,
+      age: age
     };
 
     const url = `http://localhost:3000/Info/${user.id}`;
-  
+    console.log(user);
+
     const requestUpdateUserInfo = {
       method: 'PUT',
       headers: {
@@ -42,18 +47,21 @@ function Info() {
       },
       body: JSON.stringify(userInfo),
     };
-  
-    fetch(url, requestUpdateUserInfo)
-    .then((res)=>{
-      localStorage.setItem("currentUser", JSON.stringify(userInfo));
-      setUser(userInfo);
-    })
+
+    await fetch(url, requestUpdateUserInfo)
+      .then((res) => {
+        console.log("info fetch");
+        localStorage.setItem("currentUser", JSON.stringify(userInfo));
+        setUser(userInfo);
+        setIsEdit(0);
+        console.log(user);
+        console.log(userInfo);
+      })
       .catch((error) => {
         console.log(error);
       });
-    setIsEdit(0);
-  };
     
+  };
 
   return (
     <div>
@@ -89,19 +97,19 @@ function Info() {
       ) : (
         <div className={styles["user-card"]}>
           <input id="updatedFirstName" defaultValue={user.first_name} />
-          <br/>
+          <br />
           <input id="updatedLastName" defaultValue={user.last_name} />
-          <br/>
+          <br />
           <input id="updatedUserName" defaultValue={user.username} />
-          <br/>
+          <br />
           <input id="updatedEmail" defaultValue={user.email} />
-          <br/>
+          <br />
           <input id="updatedPhone" defaultValue={user.phone} />
-          <br/>
+          <br />
           <input id="updatedAddress" defaultValue={user.address} />
-          <br/>
+          <br />
           <input id="updatedAge" defaultValue={user.age} />
-          <br/>
+          <br />
           <button onClick={editInfo}>Save</button>
         </div>
       )}

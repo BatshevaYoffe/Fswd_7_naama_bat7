@@ -25,7 +25,9 @@ function Register({ setUsername }) {
 
     fetch(url, requestOptions)
       .then((response) => {
+        console.log('n');
         if (response.status === 200) {
+          console.log(response);
           return response.json();
         } else
           // if (response.status === 409) {
@@ -33,6 +35,7 @@ function Register({ setUsername }) {
         //  }
       })
       .then((u) => {
+        console.log(u);
         localStorage.setItem("currentUser", JSON.stringify(user));
         navigate(`/users/${user.username}/info`);
       })
@@ -44,7 +47,7 @@ function Register({ setUsername }) {
 
   return (
     <section className={styles.section}>
-      <form className={styles.form} onSubmit={handleSubmit} >
+      <form className={styles.form} onSubmit={handleSubmit}>
         <h5>REGISTER</h5>
         <div className={styles["form-row"]}>
           <input

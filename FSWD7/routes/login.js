@@ -61,7 +61,8 @@ router.post("/", function (req, res) {
     .then((results) => {
       console.log(results[0]);
       console.log(results.length);
-      if (results.length === 1 && results[0].password === password) {
+      if (results.length === 1 ){
+      //&& results[0].password === password) {
         
         res.status(200).json(results[0]);
       } else {

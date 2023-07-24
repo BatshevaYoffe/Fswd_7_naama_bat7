@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
-const sqlPassword = "324170521";
+const sqlPassword = "bat7Yoffe";
 
 function sqlConnect(query, values = []) {
     return new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ function sqlConnect(query, values = []) {
 router.put("/:userId", function (req, res) {
     const {userId}=req.params;
     const {fisrt_name,last_name,username,email,phone,address,age}=req.body;
-    
+    console.log(userId);
     const query = `UPDATE users SET first_name = '${fisrt_name}' ,  last_name = '${last_name}' ,username = '${username}',phone = '${phone}',email = '${email}',address = '${address}',age = '${age}' WHERE id = ${userId}`;
     console.log(query)
     sqlConnect(query)

@@ -50,7 +50,7 @@ router.post("/", function (req, res) {
     .then((result) => {
       if (result.length > 0) {
         console.log("you are exist");
-        return res.status(202).send("You are already registered");
+        return res.status(202);
       }
       const addUser = `INSERT INTO users ( username,first_name,last_name,email,phone,address,age) VALUES ('${username}', '${first_name}', '${last_name}','${email}', '${phone}','${address}','${age}' )`;
       console.log(addUser);
@@ -60,7 +60,7 @@ router.post("/", function (req, res) {
           sqlConnect(addToPass) 
           .then((result) => {
             console.log("You are in the database");
-            return res.status(200).send("You are in the database");
+            return res.status(200);
 
           })
           .catch((err) => {
