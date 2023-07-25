@@ -27,14 +27,14 @@ function Info() {
       return;
     }
     const userInfo = {
-      id: user.id,
+      username: userName,
       fisrt_name: fisrtName,
       last_name: lastName,
-      username: userName,
       email: email,
       phone: phone,
       address: address,
-      age: age
+      age: age,
+      id: user.id
     };
 
     const url = `http://localhost:3000/Info/${user.id}`;
