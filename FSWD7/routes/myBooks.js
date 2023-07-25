@@ -43,7 +43,7 @@ function sqlConnect(query, values = []) {
       });
     });
   }
-router.get(`/users/:userid`, function (req, res) {
+app.get(`/users/:userid`, function (req, res) {
     const userid=req.params.userid;
     const query=`SELECT
     books_borrowed.request_id,
@@ -71,4 +71,3 @@ router.get(`/users/:userid`, function (req, res) {
         res.status(500).send("An error occurred");
     });
 });
-module.exports = router;
