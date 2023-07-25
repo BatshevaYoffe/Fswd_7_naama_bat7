@@ -45,9 +45,8 @@ function sqlConnect(query, values = []) {
   
 router.put("/:userId", function (req, res) {
     const {userId}=req.params;
-    const {fisrt_name,last_name,username,email,phone,address,age}=req.body;
-    console.log(fisrt_name,last_name,username,email,phone,address,age);
-    const query = `UPDATE users SET first_name = '${fisrt_name}' ,  last_name = '${last_name}' ,username = '${username}',phone = '${phone}',email = '${email}',address = '${address}',age = '${age}' WHERE id = ${userId}`;
+    const userUpdate = req.body;
+    const query = `UPDATE users SET first_name = '${userUpdate.first_name}' ,  last_name = '${userUpdate.last_name}' ,username = '${userUpdate.username}',phone = '${userUpdate.phone}',email = '${userUpdate.email}',address = '${userUpdate.address}',age = '${userUpdate.age}' WHERE id = ${userId}`;
     console.log(query)
     sqlConnect(query)
     .then((results) => {
@@ -58,11 +57,6 @@ router.put("/:userId", function (req, res) {
         console.error(err);
         res.status(500).send("An error occurred");
     });
-    
 })
-    
-
-    
-
 
 module.exports = router;

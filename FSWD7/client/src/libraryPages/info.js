@@ -1,15 +1,11 @@
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import styles from "./Info.module.css";
 
 function Info() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("currentUser")));
-
   const [isEdit, setIsEdit] = useState(0);
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("currentUser")));
-  }, [localStorage.getItem("currentUser")]);
 
-  const editInfo =async () => {
+  const editInfo = async () => {
     let fisrtName = document.getElementById("updatedFirstName").value;
     let lastName = document.getElementById("updatedLastName").value;
     let userName = document.getElementById("updatedUserName").value;
@@ -18,17 +14,14 @@ function Info() {
     let address = document.getElementById("updatedAddress").value;
     let age = document.getElementById("updatedAge").value;
 
-
-
-
-
     if (!fisrtName || !lastName || !userName || !email || !phone || !address || !age) {
       alert("One or more fields are missing!");
       return;
     }
+
     const userInfo = {
       username: userName,
-      fisrt_name: fisrtName,
+      first_name: fisrtName,
       last_name: lastName,
       email: email,
       phone: phone,
@@ -38,7 +31,6 @@ function Info() {
     };
 
     const url = `http://localhost:3000/Info/${user.id}`;
-    console.log(user);
 
     const requestUpdateUserInfo = {
       method: 'PUT',
@@ -50,17 +42,14 @@ function Info() {
 
     await fetch(url, requestUpdateUserInfo)
       .then((res) => {
-        console.log("info fetch");
         localStorage.setItem("currentUser", JSON.stringify(userInfo));
         setUser(userInfo);
         setIsEdit(0);
-        console.log(user);
-        console.log(userInfo);
       })
       .catch((error) => {
         console.log(error);
       });
-    
+
   };
 
   return (

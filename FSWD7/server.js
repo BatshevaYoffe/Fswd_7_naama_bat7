@@ -2,7 +2,6 @@ const express = require('express');
 
 const cors = require('cors');
 
-const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -19,7 +18,7 @@ const loginRoutes = require('./routes/login');
 const regRoutes = require('./routes/register');
 const userRoutes = require('./routes/user');
 const infoRoutes = require('./routes/info');
-// const postRoutes = require('./routes/posts');
+const bookRoutes = require('./routes/book');
 // const commentRoutes = require('./routes/comments');
 // const todoRoutes = require('./routes/todos');
 // const usersRRoutes = require('./routes/usersR');
@@ -29,7 +28,7 @@ app.use('/info',infoRoutes);
 app.use('/register', regRoutes);
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
-// app.use('/posts', postRoutes);
+app.use('/book', bookRoutes);
 // app.use('/comments', commentRoutes);
 // app.use('/todos', todoRoutes);
 // app.use('/usersR', usersRRoutes);
