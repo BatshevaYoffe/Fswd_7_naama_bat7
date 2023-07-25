@@ -66,6 +66,14 @@ function App() {
               }
             />
             <Route
+              path={`/users/${username}/addNewBook`}
+              element={
+                <ProtectedRoute>
+                  <addNewBook />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path={`/users/${username}/myBooks`}
               element={
                 <ProtectedRoute>

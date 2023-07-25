@@ -56,14 +56,13 @@ router.post("/", function (req, res) {
     return;
   }
 
-  const query = `SELECT * FROM users WHERE username = '${name}' LIMIT 1`;
+  const query = `SELECT * FROM users NATURAL JOIN passwords WHERE username = '${name}' LIMIT 1`;
 
   sqlConnect(query)
     .then((results) => {
       console.log(results[0]);
       console.log(results.length);
-      if (results.length === 1 ){
-      //&& results[0].password === password) {
+      if (results.length === 1 && results[0].password === password) {
         
         res.status(200).json(results[0]);
       } else {

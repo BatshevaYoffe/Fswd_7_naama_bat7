@@ -44,10 +44,11 @@ function sqlConnect(query, values = []) {
 
 // register
 router.post("/", function (req, res) {
-  const { username, password,first_name,last_name,email,phone,address,age } = req.body;
+  const { username, password, first_name, last_name, email, phone, address, age } = req.body;
   const que = `SELECT * FROM users WHERE username = '${username}'`;
   sqlConnect(que)
     .then((result) => {
+      console.log(result[0].id);
       if (result.length > 0) {
         console.log("you are exist");
         return res.status(202);
@@ -56,17 +57,16 @@ router.post("/", function (req, res) {
       console.log(addUser);
       sqlConnect(addUser)
         .then((results) => {
-          const addToPass = `INSERT INTO password (username,password) VALUES ('${username}','${password}')`;
-          sqlConnect(addToPass) 
-          .then((result) => {
-            console.log("You are in the database");
-            return res.status(200);
-
-          })
-          .catch((err) => {
-            console.error(err);
-            res.status(500).send("An error occurred");
-          });
+          const addToPass = `INSERT INTO passwords (username,password) VALUES ('${result[0].id}','${password}')`;
+          sqlConnect(addToPass)
+            .then((result) => {
+              console.log("You are in the database");
+              return res.status(200);
+            })
+            .catch((err) => {
+              console.error(err);
+              res.status(500).send("An error occurred");
+            });
         })
         .catch((err) => {
           console.error(err);
