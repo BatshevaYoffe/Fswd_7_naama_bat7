@@ -40,3 +40,4 @@ function sqlConnect(query, values = []) {
     });
   }
   
+module.exports = sqlConnect;
