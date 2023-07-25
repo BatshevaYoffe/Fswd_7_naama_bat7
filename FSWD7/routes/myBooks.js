@@ -43,24 +43,16 @@ function sqlConnect(query, values = []) {
       });
     });
   }
-app.get(`/users/:userid`, function (req, res) {
+  //get all books of user
+router.get(`/users/:userid`, function (req, res) {
     const userid=req.params.userid;
-    const query=`SELECT
-    books_borrowed.request_id,
-    books_borrowed.request_date,
-    books_borrowed.confirmation_date,
-    books_borrowed.return_date,
-    books_borrowed.user_code,
-    volumes.owner_code,
-    volumes.book_code,
-  FROM
-    books_borrowed
-  INNER JOIN
-    volumes
-  ON
-    books_borrowed.volume_code = volumes.volume_id
-  WHERE
-    volumes.owner_code = ${userid}`;
+    const query= `SELECT DISTINCT *
+    FROM (
+      SELECT *
+      FROM library_fswd7.books
+      JOIN library_fswd7.volumes ON books.id = volumes.book_code
+      WHERE owner_code = '${userid}' AND deleted = 0
+    ) AS joined_result`;
     sqlConnect(query)
     .then((results) => {
       console.log(results);
@@ -71,3 +63,24 @@ app.get(`/users/:userid`, function (req, res) {
         res.status(500).send("An error occurred");
     });
 });
+//get reader of volume
+router.get(`/:volumeid`, function (req, res) {
+    const {volumeid}=req.params;
+    const query= `SELECT DISTINCT *
+    FROM (
+      SELECT *
+      FROM library_fswd7.users
+      JOIN library_fswd7.books_borrowed ON books_borrowed.user_code = users.id
+      WHERE volume_code = '${volumeid}' AND confirmation_date  IS NOT NULL AND return_date IS NULL
+    ) AS joined_result;`;
+    sqlConnect(query)
+    .then((results) => {
+      console.log(results);
+      res.status(200).json(results)
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send("An error occurred");
+    });
+});
+module.exports = router;
