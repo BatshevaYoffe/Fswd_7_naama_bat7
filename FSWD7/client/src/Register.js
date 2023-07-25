@@ -3,15 +3,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Login.module.css";
 
-function Register({ setUsername }) {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+function Register() {
+
   const [user, setUser] = useState({ username: "", password: "", first_name: "", last_name: "", email: "", phone: '', address: '', age: "" }); // מערך שמכיל את המשתנים של השם והסיסמה
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    console.log("handleSubmit");
     e.preventDefault();
 
     const url = "http://localhost:3000/register";
