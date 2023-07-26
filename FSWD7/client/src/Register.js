@@ -29,6 +29,7 @@ function Register() {
           return response.json();
         } else
           // if (response.status === 409) {
+          console.log(response);
           throw "Username or password already exists";
         //  }
       })
