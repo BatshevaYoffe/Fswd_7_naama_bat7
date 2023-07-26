@@ -1,10 +1,9 @@
-// const { sqlConnect } = require('./connectTodb');
 const {sqlConnect} = require('./connectTodb.js');
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 
-const sqlPassword = "bat7Yoffe";
+//const sqlPassword = "bat7Yoffe";
 
 // function sqlConnect(query, values = []) {
 //     return new Promise((resolve, reject) => {

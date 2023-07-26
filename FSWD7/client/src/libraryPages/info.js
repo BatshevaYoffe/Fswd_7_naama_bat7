@@ -85,21 +85,37 @@ function Info() {
         </div>
       ) : (
         <div className={styles["user-card"]}>
-          <input id="updatedFirstName" defaultValue={user.first_name} />
-          <br />
-          <input id="updatedLastName" defaultValue={user.last_name} />
-          <br />
-          <input id="updatedUserName" defaultValue={user.username} />
-          <br />
-          <input id="updatedEmail" defaultValue={user.email} />
-          <br />
-          <input id="updatedPhone" defaultValue={user.phone} />
-          <br />
-          <input id="updatedAddress" defaultValue={user.address} />
-          <br />
-          <input id="updatedAge" defaultValue={user.age} />
-          <br />
-          <button onClick={editInfo}>Save</button>
+        <table>
+          <tr>
+          <td>Fisrt name</td>
+          <td><input id="updatedFirstName" defaultValue={user.first_name} /></td>
+          </tr>
+          <tr>
+          <td>Last name</td>
+          <td><input id="updatedLastName" defaultValue={user.last_name} /></td>
+          </tr>
+          <tr>
+          <td>Username</td>
+          <td><input id="updatedUserName" defaultValue={user.username} /></td>
+          </tr>
+          <tr>
+          <td>Email</td>
+          <td><input id="updatedEmail" defaultValue={user.email} /></td>
+          </tr>
+          <tr>
+          <td>Phone</td>
+          <td><input id="updatedPhone" defaultValue={user.phone} /></td>
+          </tr>
+          <tr>
+          <td>Address</td>
+          <td><input id="updatedAddress" defaultValue={user.address} /></td>
+          </tr>
+          <tr>
+          <td>Age</td>
+          <td><input id="updatedAge" defaultValue={user.age} /></td>
+          </tr>
+        </table>
+        <button onClick={editInfo}>Save</button>
         </div>
       )}
     </div>
