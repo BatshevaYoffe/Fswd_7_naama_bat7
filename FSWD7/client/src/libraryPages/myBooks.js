@@ -105,10 +105,35 @@ function MyBooks(){
                             <button onClick={() => showReader(book.volume_id)}>Who's the reader?</button>
                         </td>
                         </tr>
-                        <tr className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume ? 'visible' : 'collapse', display: book.volume_id === currentVolume ? 'flex' : 'none' }}>
-                        <td colSpan="6">
-                            <p>hi</p>
-                        </td>
+                        <tr className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume ? 'visible' : 'collapse'}}>
+                            <td colSpan="6">
+                                
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <th>Reader name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Borrowed date</th>
+                                    </tr>
+                                    <tr>
+
+                                            <td>
+                                            {currentReader?.first_name} {currentReader?.last_name}
+                                            </td>
+                                            <td>
+                                                {currentReader?.phone}
+                                            </td>
+                                            <td>
+                                                {currentReader?.email}
+                                            </td>
+                                            <td>
+                                                {currentReader?.confirmation_date}
+                                            </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
                         </tr>
           </React.Fragment>
             )
