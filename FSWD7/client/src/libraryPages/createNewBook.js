@@ -98,7 +98,7 @@ function CreateNewBook({book_name}) {
             <form >
                 {/* className={styles.form} > */}
                 {/* onSubmit={handleSubmit}> */}
-                <h5>new book deatiles</h5>
+                <h5>the book does not exist, please add book deatiles:</h5>
                 <div className={styles["form-row"]}>
                     <input
                         type="text"

@@ -1,5 +1,5 @@
 const { sqlConnect } = require('./connectTodb.js');
-const { newPassword, findUserId } = require('./help.js');
+// const { newPassword, findUserId } = require('./help.js');
 
 const express = require('express');
 const router = express.Router();
@@ -18,13 +18,14 @@ router.post("/", function (req, res) {
         return res.status(202);
       }
       const addUser = `INSERT INTO users ( username,first_name,last_name,email,phone,address,age) VALUES ('${username}', '${first_name}', '${last_name}','${email}', '${phone}','${address}','${age}' )`;
-      // console.log(addUser);
       sqlConnect(addUser)
         .then((results) => {
-          console.log(results[0]);
+          // console.log(results[0]);
           findUserId(username)
             .then((res) => {
-              newPassword(res[0].id, password);
+              console.log(res[0].id);
+              console.log(password);
+              newPassword(res[0].id, password).then((console.log("new user")))
             })
             .catch(() => {
               console.error(err);
@@ -42,4 +43,17 @@ router.post("/", function (req, res) {
       res.status(500).send("An error occurred");
     });
 });
+
+
+function findUserId(username) {
+  const userid = `SELECT id FROM users WHERE username = '${username}'`;
+
+  return sqlConnect(userid);
+}
+
+
+function newPassword(user_id, password) {
+  const addToPass = `INSERT INTO passwords (user_id,password) VALUES ('${user_id}','${password}')`;
+  return sqlConnect(addToPass);
+}
 module.exports = router;

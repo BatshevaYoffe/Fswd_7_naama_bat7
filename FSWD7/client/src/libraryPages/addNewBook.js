@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState } from "react";
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
 import styles from "../Login.module.css";
+// import styles from "../css/addNewBook.css";
+
 import CreateNewBook from "./createNewBook";
 // import {} '../Login.'
 
@@ -105,7 +107,7 @@ function AddNewBook() {
     <section className={styles.section}>
       <form className={styles.form} >
         {/* onSubmit={handleSubmit}> */}
-        <h5>addBook</h5>
+        <h5>What is the book name?</h5>
         <div className={styles["form-row"]}>
           <input
             type="text"
@@ -116,7 +118,7 @@ function AddNewBook() {
             onChange={(e) => setBook({ ...newbook, book_name: e.target.value })} // עדכון השדה של השם ב-user
           />
         </div>
-        <button type="button" onClick={checknookexist}>add book</button>
+        <button type="button" onClick={checknookexist}>check book</button>
         {bookDeatiles ?
           <div>
             {isBookExist
@@ -151,9 +153,7 @@ function AddNewBook() {
               :
               <div>
                 <CreateNewBook book_name={newbook.book_name} />
-                <button type="submit" onClick={handleSubmit} className={styles.btn}>
-                  ADD BOOK
-                </button>
+
               </div>}
           </div> : <div></div>}
 
