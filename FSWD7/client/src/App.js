@@ -9,6 +9,7 @@ import ContactTheManager from "./libraryPages/contactTheManager";
 import FindBook from "./libraryPages/findBook";
 import MyBooks from "./libraryPages/myBooks";
 import OrderBasket from "./libraryPages/orderBasket";
+import AddNewBook from "./libraryPages/addNewBook";
 //import Error from "/pages/Error";
 import Register from "./Register";
 
@@ -69,7 +70,7 @@ function App() {
               path={`/users/${username}/addNewBook`}
               element={
                 <ProtectedRoute>
-                  <addNewBook />
+                  <AddNewBook />
                 </ProtectedRoute>
               }
             />

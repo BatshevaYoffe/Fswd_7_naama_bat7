@@ -21,6 +21,8 @@ const infoRoutes = require('./routes/info');
 const bookRoutes = require('./routes/book');
 const myBooksRoutes = require('./routes/myBooks');
 const orderBasketRoutes = require('./routes/orderBasket');
+const categoriesRoutes = require('./routes/category');
+
 
 app.use('/info',infoRoutes);
 app.use('/register', regRoutes);
@@ -29,8 +31,7 @@ app.use('/users', userRoutes);
 app.use('/book', bookRoutes);
 app.use('/myBooks', myBooksRoutes);
 app.use('/orderBasket', orderBasketRoutes);
-
-// app.use('/comments', commentRoutes);
+app.use('/category', categoriesRoutes);
 // app.use('/todos', todoRoutes);
 // app.use('/usersR', usersRRoutes);
 // app.use('/albums', albumsRoutes);

@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 
-const sqlPassword = "324170521";
+const sqlPassword = "bat7Yoffe";
 
 function sqlConnect(query, values = []) {
     return new Promise((resolve, reject) => {
@@ -38,6 +38,6 @@ function sqlConnect(query, values = []) {
         });
       });
     });
-  }
+ }
   
 module.exports ={sqlConnect};

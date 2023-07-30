@@ -1,46 +1,87 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
+const { sqlConnect } = require('./connectTodb.js');
 
-const sqlPassword = "bat7Yoffe";
+//פונקציה המחזירה ID של ספר
+const getbookId = (bookName) => {
+    console.log(bookName);
+    const query = `SELECT id FROM books WHERE book_name = '${bookName}'`;
 
-function sqlConnect(query, values = []) {
-    return new Promise((resolve, reject) => {
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: sqlPassword,
-            database: "library_fswd7",
-        });
+    return sqlConnect(query);
 
-        connection.connect((err) => {
-            if (err) {
-                console.error("Error connecting to MySQL server: " + err.stack);
-                reject(err);
-                return;
-            }
-            console.log("Connected to MySQL server");
-
-            connection.query(query, values, (err, results) => {
-                if (err) {
-                    console.error("Error executing query: " + err.code);
-                    reject(err);
-                }
-
-                connection.end((err) => {
-                    if (err) {
-                        console.error("Error closing connection: " + err.stack);
-                        // reject(err);
-                        return;
-                    }
-                    console.log("MySQL connection closed");
-                });
-
-                resolve(results);
-            });
-        });
-    });
 }
+
+//פונקציה להוספת כרך
+const addvolume=(book_id,owner_code)=>{
+    const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${book_id}', '${owner_code}')`;
+    return sqlConnect(addVolumeQuery);
+}
+
+//ךהןסיף עותק
+router.post("/volumes", function (req, res) {
+    const idis = req.body;
+    console.log(idis);
+    const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${idis.book_id}', '${idis.owner_code}')`;
+    sqlConnect(addVolumeQuery)
+        .then((result) => {
+            res.status(202);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send("An error occurred");
+        })
+});
+//להוסיף ספר
+router.post("/newBook", function (req, res) {
+    // const idis = req.body;
+    const { newbook, selectedCategories } = req.body;
+
+    console.log(newbook);
+    console.log(selectedCategories);
+    const addBookQuery = `INSERT INTO books (book_name, author_name,publication_year) VALUES ('${newbook.book_name}', '${newbook.author_name}','${newbook.publication_year}')`;
+    sqlConnect(addBookQuery)
+        .then((result) => {
+            getbookId(newbook.book_name)
+                .then((id) => {
+                    console.log("get book id");
+                    console.log(id[0].id);
+                    addBookCategories(id[0].id, selectedCategories)
+                    .then((console.log("succes category")));
+                    addvolume(id[0].id,newbook.owner_code)
+                    .then((console.log("addvolume succes")))
+                })
+            res.status(202);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send("An error occurred");
+        })
+});
+
+//פונקציה להוספת קטגוריות לספר
+const addBookCategories = (id, category_names) => {
+    const addBookCategoriesQuery = `INSERT INTO book_categories (book_id, category_id) VALUES ${category_names
+        .map((category_names) => `('${id}', '${category_names}')`)
+        .join(", ")}`;
+
+    return sqlConnect(addBookCategoriesQuery);
+};
+
+//book_categories
+router.post("/book_categories", function (req, res) {
+    const idis = req.body;
+    console.log(idis);
+    const addbook_categoriesQuery = `INSERT INTO book_categories (book_id, category_id) VALUES ('${idis.book_id}', '${idis.category_id}')`;
+    sqlConnect(addbook_categoriesQuery)
+        .then((result) => {
+            res.status(202);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send("An error occurred");
+        })
+});
 
 router.post("/", function (req, res) {
     const book = req.body;
@@ -98,10 +139,11 @@ router.post("/", function (req, res) {
 });
 
 //בודק האם הספר קיים ומחזיר אותו אם כן
-router.get("/", function (req, res) {
-    const bookName = req.query.postId;
+router.get("/:book_name", function (req, res) {
 
-    const query = `SELECT * FROM books WHERE book_name = ${bookName}`;
+    const bookName = req.params.book_name;
+    console.log(bookName);
+    const query = `SELECT * FROM books WHERE book_name = '${bookName}'`;
 
     sqlConnect(query)
         .then((results) => {

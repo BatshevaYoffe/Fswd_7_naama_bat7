@@ -21,6 +21,7 @@ router.post("/", function (req, res) {
       // console.log(addUser);
       sqlConnect(addUser)
         .then((results) => {
+          console.log(results[0]);
           findUserId(username)
             .then((res) => {
               newPassword(res[0].id, password);
