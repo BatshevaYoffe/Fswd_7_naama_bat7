@@ -17,12 +17,12 @@ function Navbar() {
   return (
     <>
       <nav className={styles.navbar}>
-        <NavLink to={`/users/${username}/info`} className={styles.link}>
-          Info
-        </NavLink>
-        <br />
         <NavLink to="/login" className={styles.link} onClick={handleLogout}>
           Logout
+        </NavLink>
+        <br />
+        <NavLink to={`/users/${username}/info`} className={styles.link}>
+          Info
         </NavLink>
         <br />
         <NavLink to={`/users/${username}/findBook`} className={styles.link}>
