@@ -14,15 +14,18 @@ router.post("/", function (req, res) {
     return;
   }
 
-  const query=`SELECT * FROM users u inner JOIN passwords p on u.id = p.user_id WHERE username ='${name}'  LIMIT 1
-`
-  // const query = `SELECT * FROM users NATURAL JOIN passwords WHERE username = '${name}' LIMIT 1`;
+  // const query=`SELECT * FROM users u inner JOIN passwords p on u.id = p.user_id WHERE u.username ='${name}' and p.password='${password}' LIMIT 1`
 
+  const query=`SELECT * FROM library_fswd7.users u 
+  WHERE u.username ='${name}' 
+  and exists(select *from library_fswd7.passwords where password='${password}' and user_id = u.id )LIMIT 1`
+  
   sqlConnect(query)
     .then((results) => {
       console.log(results[0]);
       console.log(results.length);
-      if (results.length === 1 && results[0].password === password) {
+      if (results.length === 1){
+        //  && results[0].password === password) {
         
         res.status(200).json(results[0]);
       } else {

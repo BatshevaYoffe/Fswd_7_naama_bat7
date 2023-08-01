@@ -18,20 +18,20 @@ function Info() {
       alert("One or more fields are missing!");
       return;
     }
-
+    console.log(user.id);
     const userInfo = {
-      username: userName,
+      id: user.id,
       first_name: fisrtName,
       last_name: lastName,
-      email: email,
+      username: userName,
       phone: phone,
       address: address,
-      age: age,
-      id: user.id
+      email: email,
+      age: age
     };
 
+    console.log(userInfo);
     const url = `http://localhost:3000/Info/${user.id}`;
-
     const requestUpdateUserInfo = {
       method: 'PUT',
       headers: {
@@ -42,6 +42,7 @@ function Info() {
 
     await fetch(url, requestUpdateUserInfo)
       .then((res) => {
+        console.log(userInfo);
         localStorage.setItem("currentUser", JSON.stringify(userInfo));
         setUser(userInfo);
         setIsEdit(0);
