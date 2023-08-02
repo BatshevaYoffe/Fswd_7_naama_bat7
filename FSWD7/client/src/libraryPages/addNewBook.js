@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useParams, useEffect, useState } from "react";
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
-import styles from "../Login.module.css";
-// import styles from "../css/addNewBook.css";
+// import styles from "../Login.module.css";
+import styles from "../css/addNewBook.css";
 
 import CreateNewBook from "./createNewBook";
-// import {} '../Login.'
 
 function AddNewBook() {
   const [isFieldEnabled, setIsFieldEnabled] = useState(false);
@@ -156,7 +155,6 @@ function AddNewBook() {
 
               </div>}
           </div> : <div></div>}
-
       </form>
     </section>
   );

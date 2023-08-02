@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
 .section {
-    background-image: url("./background_login.jpg");
+    /* background-image: url("./background_login.jpg"); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
