@@ -20,8 +20,9 @@ function OrderBasket(){
     useEffect(()=>{
     debugger
     // ספרים שאני נמצא ברשימת המתנה על מנת להשאיל אותם
+    console.log("Fetching myWishList...");
     const myWishListFromLocal = JSON.parse(localStorage.getItem('myWishList'));
-    if (Array.isArray(myWishListFromLocal)) {
+    if (Array.isArray(myWishListFromLocal) && myWishListFromLocal.length>0) {
         setMyWishList(myWishListFromLocal);
         setFindMyWishList(true);
     } else {
@@ -33,19 +34,23 @@ function OrderBasket(){
           'Content-Type': 'application/json',
         },
       };
-
+      console.log("Fetching myWishList from server...");
       fetch(url, requestMyWishList)
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
+          console.log(data)
           setMyWishList(data);
-          localStorage.setItem('myWhisList', JSON.stringify(data));
+          if(data.length>0)
+           FindMyWishList(true);
+          localStorage.setItem('myWishList', JSON.stringify(data));
         })
         .catch(() => setFindMyWishList(false));
     }
    //ספרים שאני כרגע קורא 
+   console.log("Fetching myReadingList...");
     const myReadingListFromLocal = JSON.parse(localStorage.getItem('myReadingList'));
-    if (Array.isArray(myReadingListFromLocal)) {
+    if (Array.isArray(myReadingListFromLocal)&& myReadingListFromLocal.length>0) {
         setMyReadingList(myReadingListFromLocal);
         setFindMyReadingList(true);
     } else {
@@ -57,12 +62,15 @@ function OrderBasket(){
           'Content-Type': 'application/json',
         },
       };
-
+      console.log("Fetching myReadingList from server...");
       fetch(url, requestMyReadingList)
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
+          console.log(data);
           setMyReadingList(data);
+          if(data.length>0)
+           setFindMyReadingList(true);
           localStorage.setItem('myReadingList', JSON.stringify(data));
         })
         .catch(() => setFindMyReadingList(false));
@@ -106,7 +114,7 @@ function OrderBasket(){
     
     return (
         <div>
-          {myWhisListHtml && (
+          {myWhisListHtml!==null ? (
             <div className={styles["user-card"]}>
               <h1> My Wish List</h1>
               <table>
@@ -121,9 +129,11 @@ function OrderBasket(){
                 </tbody>
               </table>
             </div>
-          )}
+          ):
+          <p>you don't have wish list</p>
+          }
       
-          {myReadingListHtml && (
+          {myReadingListHtml!==null ? (
             <div className={styles["user-card"]}>
               <h1> My reading list</h1>
               <table>
@@ -138,7 +148,8 @@ function OrderBasket(){
                 </tbody>
               </table>
             </div>
-          )}
+          ):
+          <p>you don't have reading list </p>}
         </div>
       );
     

@@ -43,7 +43,7 @@ const mysql = require('mysql2');
 //     });
 //   }
   //get all books wish list of user
-router.get(`wishList/users/:userid`, function (req, res) {
+router.get(`/wishList/users/:userid`, function (req, res) {
     const userid=req.params.userid;
     const query= `SELECT books_borrowed.*, volumes.volume_id, volumes.owner_code, volumes.book_code, books.*
     FROM library_fswd7.books_borrowed
@@ -62,7 +62,7 @@ router.get(`wishList/users/:userid`, function (req, res) {
 });
 
   //get all reading  list of user
-  router.get(`myReadingList/users/:userid`, function (req, res) {
+  router.get(`/myReadingList/users/:userid`, function (req, res) {
     const userid=req.params.userid;
     const query= `SELECT books_borrowed.*, volumes.volume_id, volumes.owner_code, volumes.book_code, books.*
     FROM library_fswd7.books_borrowed
