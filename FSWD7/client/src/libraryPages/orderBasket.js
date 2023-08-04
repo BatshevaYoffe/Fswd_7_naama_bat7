@@ -10,10 +10,33 @@ function OrderBasket(){
     const [FindMyWishList,setFindMyWishList]=useState(false);
     const [FindMyReadingList,setFindMyReadingList]=useState(false);
     
-    const deleteBookFromMyWishList = (request_id,book_code) => {
+    const deleteItemFromReadingList = (requestId) => {
+      const updatedReadingList = myReadingList.filter(item => item.request_id !== requestId);
+      setMyReadingList(updatedReadingList);
+    };
+
+    const deleteBookFromMyWishList = (request_id,volume_id) => {
 
     }
-    const returnBook = (request_id,book_code) => {
+    //החזרה של  ספר
+    const returnBook = (request_id,volume_id) => {
+      debugger;
+    const url = `http://localhost:3000/orderBasket/myReadingList/users/${user.id}`;
+    const requestUpdateBooksBorrowed = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({request_id,volume_id}),
+    };
+    fetch(url, requestUpdateBooksBorrowed)
+    .then((res) => {
+      if(res.status===200)
+      deleteItemFromReadingList(request_id);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
     }
 
@@ -88,7 +111,7 @@ function OrderBasket(){
                     <td>{book.publication_year}</td>
                     <td>{book.request_date}</td>
                     <td>
-                    <button onClick={() => deleteBookFromMyWishList(book.request_id,book.book_code)}>Delete</button>
+                    <button onClick={() => deleteBookFromMyWishList(book.request_id,book.volume_id)}>Delete</button>
                     </td>
                 </tr>
             )}
@@ -103,7 +126,7 @@ function OrderBasket(){
                     <td>{book.publication_year}</td>
                     <td>{book.confirmation_date}</td>
                     <td>
-                    <button onClick={() => returnBook(book.request_id,book.book_code)}>Return book</button>
+                    <button onClick={() => returnBook(book.request_id,book.volume_id)}>Return book</button>
                     </td>
                 </tr>
             )}

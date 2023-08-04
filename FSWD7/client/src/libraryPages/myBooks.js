@@ -54,8 +54,8 @@ function MyBooks(){
         else{
             const readerForVolumeFromLocal = JSON.parse(localStorage.getItem(`readerForVolume=${volume_id}`));
             if(readerForVolumeFromLocal!==null){
-                setCurrentReader(readerForVolumeFromLocal[0]);
-                console.log(readerForVolumeFromLocal[0])
+                setCurrentReader(readerForVolumeFromLocal);
+                console.log(readerForVolumeFromLocal)
             }
             else{
                 const url = `http://localhost:3000/myBooks/${volume_id}`;
@@ -114,7 +114,7 @@ if (findMyBooks) {
                                 <button onClick={() => showReader(book.volume_id)}>Who's the reader?</button>
                             </td>
                         </tr>
-                        <tr className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume && currentReader !== null && currentReader.volume_code === book.volume_id ? 'visible' : 'collapse' }}>
+                        <tr className={styles.bookReader} style={{ visibility: book.volume_id === currentVolume && currentReader !== null  && currentReader.volume_code === book.volume_id ? 'visible' : 'collapse' }}>
                             <td colSpan="6">
 
                                 <table>
