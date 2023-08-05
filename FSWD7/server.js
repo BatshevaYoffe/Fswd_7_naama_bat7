@@ -22,6 +22,7 @@ const bookRoutes = require('./routes/book');
 const myBooksRoutes = require('./routes/myBooks');
 const orderBasketRoutes = require('./routes/orderBasket');
 const categoriesRoutes = require('./routes/category');
+const findbookRoutes = require('./routes/findbook');
 
 
 app.use('/info',infoRoutes);
@@ -32,7 +33,7 @@ app.use('/book', bookRoutes);
 app.use('/myBooks', myBooksRoutes);
 app.use('/orderBasket', orderBasketRoutes);
 app.use('/category', categoriesRoutes);
-// app.use('/todos', todoRoutes);
+app.use('/findbook', findbookRoutes);
 // app.use('/usersR', usersRRoutes);
 // app.use('/albums', albumsRoutes);
 // app.use('/photos', photosRoutes);
