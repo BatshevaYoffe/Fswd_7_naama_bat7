@@ -106,3 +106,5 @@ yarn.lock
 # Ignore firebase config
 src/firebase/config.js
 FSWD7/client/node_modules/.cache/default-development/0.pack
+FSWD7/client/node_modules/.cache/babel-loader/93be6c2d337830c81739f128edc7147dcecb0fcdc61180421aaca5988743ff64.json
+FSWD7/client/node_modules/.cache/babel-loader/bc615e800d33c0b0b38bc1ecf8be6621bba6e58a08be6d87554fb8af6e835494.json
