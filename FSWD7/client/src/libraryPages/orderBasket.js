@@ -10,33 +10,69 @@ function OrderBasket(){
     const [FindMyWishList,setFindMyWishList]=useState(false);
     const [FindMyReadingList,setFindMyReadingList]=useState(false);
     
-    const deleteItemFromReadingList = (requestId) => {
-      const updatedReadingList = myReadingList.filter(item => item.request_id !== requestId);
-      setMyReadingList(updatedReadingList);
-    };
+    
 
-    const deleteBookFromMyWishList = (request_id,volume_id) => {
+    
+    const updateRequest = (request_id,whatTodo) =>{
+      if(whatTodo=== "returnBook"){
+        console.log("return book");
+        const updatedReadingList = myReadingList.filter(item => item.request_id !== request_id);
+        localStorage.setItem('myReadingList', JSON.stringify(updatedReadingList));
+        setMyReadingList(updatedReadingList);
+        if (updatedReadingList.length === 0) {
+          setFindMyReadingList(false);
+        }
+      }else{
+        if(whatTodo="removeFromWishList"){
+          const updatedWhishList = myWishList.filter(item => item.request_id !== request_id);
+          localStorage.setItem('myWishList', JSON.stringify(updatedWhishList));
+          setMyWishList(updatedWhishList);
+          if (updatedWhishList.length === 0) {
+            setFindMyWishList(false);
+          }
+        }
+      }
+  }
+  
+ //מחיקת ספר מרשימת המתנה 
+  const deleteBookFromMyWishList =async (request_id) => {
+    const url = `http://localhost:3000/orderBasket/wishList/remove/${request_id}/users/${user.id}`;
 
-    }
-    //החזרה של  ספר
-    const returnBook = (request_id,volume_id) => {
-      debugger;
-    const url = `http://localhost:3000/orderBasket/myReadingList/users/${user.id}`;
-    const requestUpdateBooksBorrowed = {
-      method: 'PUT',
+    const requestMyWishList = {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({request_id,volume_id}),
     };
-    fetch(url, requestUpdateBooksBorrowed)
-    .then((res) => {
-      if(res.status===200)
-      deleteItemFromReadingList(request_id);
-    })
-    .catch((error) => {
+    try {
+      const res = await fetch(url, requestMyWishList);
+      if (res.status === 200) 
+        updateRequest(request_id,"removeFromWishList");
+        }
+     catch (error) {
       console.log(error);
-    });
+    }
+  }
+    //החזרה של  ספר
+    const returnBook = async (request_id,volume_id) => {
+      debugger;
+        const url = `http://localhost:3000/orderBasket/myReadingList/returnBook/users/${user.id}`;
+        const requestUpdateBooksBorrowed = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({request_id,volume_id}),
+        };
+        try {
+          const res = await fetch(url, requestUpdateBooksBorrowed);
+          if (res.status === 200) 
+            updateRequest(request_id,"returnBook");
+            }
+         catch (error) {
+          console.log(error);
+        }
+       
 
     }
 
@@ -62,10 +98,11 @@ function OrderBasket(){
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
+          console.log("this is my wish list")
           console.log(data)
           setMyWishList(data);
           if(data.length>0)
-           FindMyWishList(true);
+           setFindMyWishList(true);
           localStorage.setItem('myWishList', JSON.stringify(data));
         })
         .catch(() => setFindMyWishList(false));
@@ -111,12 +148,13 @@ function OrderBasket(){
                     <td>{book.publication_year}</td>
                     <td>{book.request_date}</td>
                     <td>
-                    <button onClick={() => deleteBookFromMyWishList(book.request_id,book.volume_id)}>Delete</button>
+                    <button onClick={() => deleteBookFromMyWishList(book.request_id)}>Delete</button>
                     </td>
                 </tr>
             )}
         )
     }
+    
     if (FindMyReadingList){
         myReadingListHtml = myReadingList.map((book)=>{
             return(
@@ -132,6 +170,7 @@ function OrderBasket(){
             )}
         )
     }
+   
 
          
     
@@ -156,7 +195,7 @@ function OrderBasket(){
           <p>you don't have wish list</p>
           }
       
-          {myReadingListHtml!==null ? (
+          {myReadingListHtml!==null  ? (
             <div className={styles["user-card"]}>
               <h1> My reading list</h1>
               <table>
