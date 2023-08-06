@@ -122,7 +122,7 @@ function CreateNewBook({book_name}) {
                 <div>
                     {categories.map((category, index) => (
                         <div key={index}>
-                            <label>
+                            <label> 
                                 <input
                                     type="checkbox"
                                     value={category.id}

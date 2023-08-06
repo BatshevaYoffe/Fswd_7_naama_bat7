@@ -24,6 +24,7 @@ const orderBasketRoutes = require('./routes/orderBasket');
 const categoriesRoutes = require('./routes/category');
 const findbookRoutes = require('./routes/findbook');
 
+ 
 
 app.use('/info',infoRoutes);
 app.use('/register', regRoutes);
