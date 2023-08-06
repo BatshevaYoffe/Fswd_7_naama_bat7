@@ -10,18 +10,42 @@ function OrderBasket(){
     const [FindMyWishList,setFindMyWishList]=useState(false);
     const [FindMyReadingList,setFindMyReadingList]=useState(false);
     
-    const deleteBookFromMyWishList = (request_id,book_code) => {
+    const deleteItemFromReadingList = (requestId) => {
+      const updatedReadingList = myReadingList.filter(item => item.request_id !== requestId);
+      setMyReadingList(updatedReadingList);
+    };
+
+    const deleteBookFromMyWishList = (request_id,volume_id) => {
 
     }
-    const returnBook = (request_id,book_code) => {
+    //החזרה של  ספר
+    const returnBook = (request_id,volume_id) => {
+      debugger;
+    const url = `http://localhost:3000/orderBasket/myReadingList/users/${user.id}`;
+    const requestUpdateBooksBorrowed = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({request_id,volume_id}),
+    };
+    fetch(url, requestUpdateBooksBorrowed)
+    .then((res) => {
+      if(res.status===200)
+      deleteItemFromReadingList(request_id);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
     }
 
     useEffect(()=>{
     debugger
     // ספרים שאני נמצא ברשימת המתנה על מנת להשאיל אותם
+    console.log("Fetching myWishList...");
     const myWishListFromLocal = JSON.parse(localStorage.getItem('myWishList'));
-    if (Array.isArray(myWishListFromLocal)) {
+    if (Array.isArray(myWishListFromLocal) && myWishListFromLocal.length>0) {
         setMyWishList(myWishListFromLocal);
         setFindMyWishList(true);
     } else {
@@ -33,19 +57,23 @@ function OrderBasket(){
           'Content-Type': 'application/json',
         },
       };
-
+      console.log("Fetching myWishList from server...");
       fetch(url, requestMyWishList)
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
+          console.log(data)
           setMyWishList(data);
-          localStorage.setItem('myWhisList', JSON.stringify(data));
+          if(data.length>0)
+           FindMyWishList(true);
+          localStorage.setItem('myWishList', JSON.stringify(data));
         })
         .catch(() => setFindMyWishList(false));
     }
    //ספרים שאני כרגע קורא 
+   console.log("Fetching myReadingList...");
     const myReadingListFromLocal = JSON.parse(localStorage.getItem('myReadingList'));
-    if (Array.isArray(myReadingListFromLocal)) {
+    if (Array.isArray(myReadingListFromLocal)&& myReadingListFromLocal.length>0) {
         setMyReadingList(myReadingListFromLocal);
         setFindMyReadingList(true);
     } else {
@@ -57,12 +85,15 @@ function OrderBasket(){
           'Content-Type': 'application/json',
         },
       };
-
+      console.log("Fetching myReadingList from server...");
       fetch(url, requestMyReadingList)
         .then((response) => response.json())
         .then((data) => {
           //const sortedWishList = [...data].sort((a, b) => a.id - b.id);
+          console.log(data);
           setMyReadingList(data);
+          if(data.length>0)
+           setFindMyReadingList(true);
           localStorage.setItem('myReadingList', JSON.stringify(data));
         })
         .catch(() => setFindMyReadingList(false));
@@ -80,7 +111,7 @@ function OrderBasket(){
                     <td>{book.publication_year}</td>
                     <td>{book.request_date}</td>
                     <td>
-                    <button onClick={() => deleteBookFromMyWishList(book.request_id,book.book_code)}>Delete</button>
+                    <button onClick={() => deleteBookFromMyWishList(book.request_id,book.volume_id)}>Delete</button>
                     </td>
                 </tr>
             )}
@@ -95,7 +126,7 @@ function OrderBasket(){
                     <td>{book.publication_year}</td>
                     <td>{book.confirmation_date}</td>
                     <td>
-                    <button onClick={() => returnBook(book.request_id,book.book_code)}>Return book</button>
+                    <button onClick={() => returnBook(book.request_id,book.volume_id)}>Return book</button>
                     </td>
                 </tr>
             )}
@@ -106,7 +137,7 @@ function OrderBasket(){
     
     return (
         <div>
-          {myWhisListHtml && (
+          {myWhisListHtml!==null ? (
             <div className={styles["user-card"]}>
               <h1> My Wish List</h1>
               <table>
@@ -121,9 +152,11 @@ function OrderBasket(){
                 </tbody>
               </table>
             </div>
-          )}
+          ):
+          <p>you don't have wish list</p>
+          }
       
-          {myReadingListHtml && (
+          {myReadingListHtml!==null ? (
             <div className={styles["user-card"]}>
               <h1> My reading list</h1>
               <table>
@@ -138,7 +171,8 @@ function OrderBasket(){
                 </tbody>
               </table>
             </div>
-          )}
+          ):
+          <p>you don't have reading list </p>}
         </div>
       );
     
