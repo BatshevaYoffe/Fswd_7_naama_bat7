@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
 
-const sqlPassword = "bat7Yoffe";
+const sqlPassword = "324170521";
 
 function sqlConnect(query, values = []) {
     return new Promise((resolve, reject) => {

@@ -41,8 +41,8 @@ function Navbar() {
         My books
         </NavLink>
         <br />
-        <NavLink to={`/users/${username}/contactTheManager`} className={styles.link}>
-        Contact the manager
+        <NavLink to={`/users/${username}/messages`} className={styles.link}>
+        Messages
         </NavLink>
         <br />
       </nav>

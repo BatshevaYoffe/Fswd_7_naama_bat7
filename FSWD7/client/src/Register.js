@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 // import styles from "./Login.module.css";
-import styles from "./Register.css"
+import styles from "./register.css"
 
 function Register() {
 

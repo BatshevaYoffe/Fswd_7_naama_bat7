@@ -10,6 +10,8 @@ import FindBook from "./libraryPages/findBook";
 import MyBooks from "./libraryPages/myBooks";
 import OrderBasket from "./libraryPages/orderBasket";
 import AddNewBook from "./libraryPages/addNewBook";
+import Messages from "./libraryPages/messages";
+
 //import Error from "/pages/Error";
 import Register from "./Register";
 
@@ -83,10 +85,10 @@ function App() {
               }
             />
             <Route
-              path={`/users/${username}/contactTheManager`}
+              path={`/users/${username}/messages`}
               element={
                 <ProtectedRoute>
-                  <ContactTheManager />
+                  <Messages/>
                 </ProtectedRoute>
               }
             />
