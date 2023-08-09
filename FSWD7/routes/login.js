@@ -1,6 +1,8 @@
 const {sqlConnect} = require('./connectTodb.js');
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs'); //npm install bcryptjs
+
   
 router.post("/", function (req, res) {
     
