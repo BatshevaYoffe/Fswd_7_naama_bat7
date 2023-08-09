@@ -139,6 +139,32 @@ router.post('/filter', function (req, res) {
     });
 });
 
+router.post('/borrowBook', function (req, res){
+  const { data } = req.body;
+
+  addBookBorrowedAsBorrowed(data.userCode, data.volumeCode)
+  .then((result) => {
+    res.status(200).send("ok")
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  });
+});
+
+router.post('/addBookToWishlist', function (req, res){
+  const { data } = req.body;
+
+  addBookBorrowedAsPending(data.userCode, data.volumeCode)
+  .then((result) => {
+    res.status(200).send("ok")
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  });
+});
+
 const getBooks = (filterModel) => {
   const q = getBooksQuery(filterModel);
   return sqlConnect(q);
@@ -262,6 +288,31 @@ const removeDuplicatesFromArray = (arr) => {
     []
   );
 };
+
+const addBookBorrowedAsPending = (userCode, volumeCode) => {
+  const queryModel = getAddBookBorrowedAsPendingQuery(userCode, volumeCode);
+  return sqlConnect(queryModel.query, queryModel.values);
+};
+
+const addBookBorrowedAsBorrowed = (userCode, volumeCode) => {
+  const queryModel = getAddBookBorrowedAsBorrowedQuery(userCode, volumeCode);
+  return sqlConnect(queryModel.query, queryModel.values);
+};
+
+const getAddBookBorrowedAsPendingQuery = (userCode, volumeCode) => {
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const values = [currentDate, userCode, volumeCode];
+  const q = `INSERT INTO books_borrowed (request_date,user_code,volume_code) VALUES (?,?,?)`;
+  return { query: q, values: values };
+};
+
+const getAddBookBorrowedAsBorrowedQuery = (userCode, volumeCode) => {
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const values = [currentDate, userCode, volumeCode, currentDate];
+  const q = `INSERT INTO books_borrowed (request_date,user_code,volume_code,confirmation_date) VALUES (?,?,?,?)`;
+  return { query: q, values: values };
+};
+
 
 const runSqlQuery = (query) => {};
 
