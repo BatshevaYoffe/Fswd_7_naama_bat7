@@ -2,6 +2,19 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const { sqlConnect } = require('./connectTodb.js');
+const multer = require('multer');//npm install multer
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage });
 
 //פונקציה המחזירה ID של ספר
 const getbookId = (bookName) => {
@@ -19,10 +32,30 @@ const addvolume=(book_id,owner_code)=>{
 }
 
 //ךהןסיף עותק
-router.post("/volumes", function (req, res) {
+// router.post("/volumes", function (req, res) {
+//     const idis = req.body;
+//     console.log(idis);
+//     const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${idis.book_id}', '${idis.owner_code}')`;
+//     sqlConnect(addVolumeQuery)
+//         .then((result) => {
+//             res.status(202);
+//         })
+//         .catch((error) => {
+//             console.log(error);
+//             res.status(500).send("An error occurred");
+//         })
+// });
+
+router.post("/volumes", upload.single('image'), function (req, res) {
+    if (!req.file) {
+      res.status(400).send('No image provided.');
+    }
+
+    const imagePath = req.file.path;
+    
     const idis = req.body;
     console.log(idis);
-    const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code) VALUES ('${idis.book_id}', '${idis.owner_code}')`;
+    const addVolumeQuery = `INSERT INTO volumes (book_code, owner_code,image_path) VALUES ('${idis.book_id}', '${idis.owner_code}','${imagePath})`;
     sqlConnect(addVolumeQuery)
         .then((result) => {
             res.status(202);
@@ -32,6 +65,7 @@ router.post("/volumes", function (req, res) {
             res.status(500).send("An error occurred");
         })
 });
+
 //להוסיף ספר
 router.post("/newBook", function (req, res) {
     // const idis = req.body;
