@@ -106,7 +106,7 @@ router.post('/filter', function (req, res) {
         .then((booksCategories) => {
           getCategories(booksCategories)
             .then((categories) => {
-              getUsers(booksCategories)
+              getUsers(books)
                 .then((users) => {
                   console.log(
                     generateReaultList(
