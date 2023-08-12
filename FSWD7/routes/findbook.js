@@ -236,7 +236,7 @@ const getBooksCategories = (books) => {
 
 const getBooksCategoriesQuery = (booksIds) => {
   const valuesString = booksIds.join(', ');
-  return `select * from book_categories where category_id in (${valuesString})`;
+  return `select * from book_categories where book_id in (${valuesString})`;
 };
 
 const getBooksQuery = (filterModel) => {
