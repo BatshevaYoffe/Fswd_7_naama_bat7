@@ -197,7 +197,7 @@ const generateReaultList = (books, booksCategories, categories, users) => {
 };
 
 const getBookCategoriesList = (booksCategories, categories, bookId) => {
-  const categoriesIds = booksCategories.filter((bc) => bc.book_id == bookId);
+  const categoriesIds = booksCategories.filter((bc) => bc.book_id == bookId).map(bc => bc.category_id);
   return categories
     .filter((c) => categoriesIds.includes(c.id))
     .map((c) => c.category_name);
