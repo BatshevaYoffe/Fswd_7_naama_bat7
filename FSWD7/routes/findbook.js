@@ -182,14 +182,16 @@ const generateReaultList = (books, booksCategories, categories, users) => {
         categories,
         book.book_code
       );
-      const owner = users.filter((u) => u.id == book.owner_code);
+      // const owner = users.filter((u) => u.id == book.owner_code);
       result[bookName] = {
         bookName: bookName,
         volumes: [],
         categories: categoriesList,
-        owner: owner,
+        // owner: owner,
       };
     }
+    const owner = users.filter((u) => u.id == book.owner_code);
+    book.owner = owner
     result[bookName].volumes.push(book);
   }
 
