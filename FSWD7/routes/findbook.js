@@ -102,20 +102,25 @@ router.post('/filter', function (req, res) {
 
   getBooks(filterModel)
     .then((books) => {
+      if(!books){
+        res.status(200).json([]);
+      }
       getBooksCategories(books)
         .then((booksCategories) => {
           getCategories(booksCategories)
             .then((categories) => {
               getUsers(books)
                 .then((users) => {
-                  console.log(
+                  const result = 
+      
                     generateReaultList(
                       books,
                       booksCategories,
                       categories,
                       users
-                    )
+                    
                   );
+                  res.status(200).json(result);
                 })
                 .catch((err) => {
                   console.error(err);
@@ -131,7 +136,7 @@ router.post('/filter', function (req, res) {
           console.error(err);
           res.status(500).send('An error occurred');
         });
-      res.status(200).json(books);
+      // res.status(200).json(books);
     })
     .catch((err) => {
       console.error(err);
@@ -205,8 +210,8 @@ const getBookCategoriesList = (booksCategories, categories, bookId) => {
     .map((c) => c.category_name);
 };
 
-const getUsers = (booksCategories) => {
-  const usersIds = booksCategories.map((b) => b.owner_code);
+const getUsers = (books) => {
+  const usersIds = books.map((b) => b.owner_code);
   const uniqueArr = removeDuplicatesFromArray(usersIds);
   const q = getUsersQuery(uniqueArr);
   return sqlConnect(q);
@@ -319,4 +324,3 @@ const getAddBookBorrowedAsBorrowedQuery = (userCode, volumeCode) => {
 const runSqlQuery = (query) => {};
 
 module.exports = router;
-
